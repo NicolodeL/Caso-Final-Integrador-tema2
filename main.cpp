@@ -23,26 +23,23 @@ ConsoleBox *consoleBox = new ConsoleBox; // suponemos que ya está inicializado
 void load_script(const char* filename, bool show_script = false)
 {
     string script;
-    FILE* f = nullptr;
+    ifstream file;
 
     try
     {
-        f = fopen(filename, "rb");
-        if (!f)
+        file.open(filename);
+        if (!file.is_open())
         {
             cerr << "Error de apertura de " << filename << endl;
             return;
         }
 
-        int c;
         char buf[4001];
-        while ((c = fread(buf, 1, 4000, f)) > 0)
+        while (file.read(buf, sizeof(buf)))
         {
-            buf[c] = 0;
+            buf[file.gcount()] = '\0'; // Agregamos el carácter nulo al final del buffer leído
             script.append(buf);
         }
-        fclose(f);
-        f = nullptr;
 
         if (show_script)
         {
@@ -55,18 +52,24 @@ void load_script(const char* filename, bool show_script = false)
     catch (const exception& e)
     {
         cerr << "Error durante la lectura del archivo: " << e.what() << endl;
-        if (f)
-            fclose(f);
     }
+}
+
+void load_script()
+{
+    string filename;
+    cout << "Archivo: ";
+    cin >> filename;
+    load_script(filename.c_str(), true);
 }
 
 int main()
 {
-    // Utiliza la función load_script() para cargar el archivo "Ejemplo.txt" y mostrar su contenido
+    // Utiliza la función load_script() para cargar un script y mostrar su contenido
     load_script("Ejemplo.txt", true);
 
     // Utiliza la función load_script() para cargar un script mediante la entrada del usuario
-    
+    load_script();
 
     return 0;
 }
