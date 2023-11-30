@@ -2,17 +2,19 @@
 #include <string>
 #include <cstdio>
 #include <fstream>
+
 using namespace std;
 
 struct ColorConsole
 {
     static constexpr auto fg_blue = "\033[34m";
     static constexpr auto bg_white = "\033[47m";
+    static constexpr auto reset = "\033[0m";
 };
 
 struct ConsoleBox
 {
-    void new_text() {/*...*/}
+    void new_text() { /*...*/ }
     void set_text(const string &text) { cout << text << endl; }
 };
 
@@ -22,12 +24,13 @@ void load_script(const char* filename, bool show_script = false)
 {
     string script;
     FILE* f = nullptr;
+
     try
     {
         f = fopen(filename, "rb");
         if (!f)
         {
-            cerr << "error de apertura de " << filename << endl;
+            cerr << "Error de apertura de " << filename << endl;
             return;
         }
 
@@ -44,23 +47,27 @@ void load_script(const char* filename, bool show_script = false)
         if (show_script)
         {
             cout << ColorConsole::fg_blue << ColorConsole::bg_white;
-            cout << script << endl;
+            cout << script << ColorConsole::reset << endl;
         }
         consoleBox->new_text();
         consoleBox->set_text(script);
     }
-    catch (...)
+    catch (const exception& e)
     {
-        cerr << "error durante la lectura del archivo" << endl;
-        if(f)
+        cerr << "Error durante la lectura del archivo: " << e.what() << endl;
+        if (f)
             fclose(f);
     }
 }
 
-void load_script()
+int main()
 {
-    char filename[500];
-    printf("Archivo: ");
-    scanf("%499s", filename);
-    load_script(filename, true);
+    // Utiliza la función load_script() para cargar el archivo "Ejemplo.txt" y mostrar su contenido
+    load_script("Ejemplo.txt", true);
+
+    // Utiliza la función load_script() para cargar un script mediante la entrada del usuario
+    
+
+    return 0;
 }
+
