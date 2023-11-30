@@ -62,13 +62,11 @@ void load_script()
     cin >> filename;
     load_script(filename.c_str(), true);
 }
-
+// C:\Users\nicol\OneDrive\Documents\GitHub\Caso-Final-Integrador-tema2\Ejemplo.txt ruta hasta el archivod de ejemplo
 int main()
 {
-    // Utiliza la función load_script() para cargar un script y mostrar su contenido
     load_script("Ejemplo.txt", true);
 
-    // Utiliza la función load_script() para cargar un script mediante la entrada del usuario
     load_script();
 
     return 0;
